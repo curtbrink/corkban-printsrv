@@ -8,4 +8,8 @@ export class PrinterService {
   async printThing(thing: string): Promise<boolean> {
     return this.printerProvider.printText(thing);
   }
+
+  async printImage(filePath: string): Promise<boolean> {
+    return this.printerProvider.printImage(filePath);
+  }
 }
