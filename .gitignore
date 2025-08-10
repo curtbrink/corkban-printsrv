@@ -3,6 +3,9 @@
 /node_modules
 /build
 
+# test in-flight pngs
+/*.png
+
 # Logs
 logs
 *.log

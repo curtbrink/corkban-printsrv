@@ -1,6 +1,11 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, RawBody } from '@nestjs/common';
+import { readFile, writeFile } from 'fs/promises';
+import { createWriteStream } from 'fs';
+import * as path from 'path';
 import { ImageGeneratorService } from 'src/domain/image-generator/image-generator.service';
 import { PrinterService } from 'src/domain/printer/printer.service';
+import { Readable } from 'stream';
+import * as PImage from 'pureimage';
 
 @Controller('/')
 export class PrintServerController {
@@ -23,5 +28,33 @@ export class PrintServerController {
     );
     await this.printerService.printImage(filePath);
     return filePath;
+  }
+
+  @Get('encode/:fileName')
+  async encodeImage(@Param('fileName') fileName: string): Promise<string> {
+    console.log('encoding thing');
+    const filePath = path.join('.', fileName);
+    const imgBuffer = await readFile(filePath);
+    const readableBuffer = Readable.from(imgBuffer);
+    const pngImg = await PImage.decodePNGFromStream(readableBuffer);
+    const tmppath = path.join('.', 'tmpencode.png');
+    const writeStream = createWriteStream(tmppath);
+    await PImage.encodePNGToStream(pngImg, writeStream);
+
+    const img = (await readFile(tmppath)) as Buffer;
+    console.log('encoded thing');
+    return img.toString('base64url');
+  }
+
+  @Post('decode')
+  async decodeImage(@Body() img: string): Promise<void> {
+    const imgBuffer = Buffer.from(img, 'base64url');
+    console.log('decoded img');
+    const fileName = path.join('.', 'tmp.png');
+    await writeFile(fileName, imgBuffer);
+    console.log('wrote file');
+
+    await this.printerService.printImage(fileName);
+    console.log('printed thing');
   }
 }
