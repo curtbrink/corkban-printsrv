@@ -18,7 +18,7 @@ export class DebugController {
   @Get()
   async testPrint(): Promise<ServiceResult> {
     return this.printerService.printText(
-      'This is a test of the printer service infrastructure!',
+      'This is a test of the printer service infrastructure! :3',
     );
   }
 
