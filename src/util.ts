@@ -4,6 +4,11 @@ interface Flavoring<FlavorT> {
   _type?: FlavorT;
 }
 
+export type ServiceResult = {
+  message: string;
+  error?: string;
+};
+
 export type CorkbanId<Flavor extends string> = string & Flavoring<Flavor>;
 
 export declare type DeepPartial<T> =

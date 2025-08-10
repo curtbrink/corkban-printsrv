@@ -1,8 +1,8 @@
+import { PrintServerController } from 'src/api/controllers/print-server.controller';
 import { IPrinterProvider } from 'src/domain/printer/printer.provider.interface';
 import { PrinterService } from 'src/domain/printer/printer.service';
-import { PrinterProvider } from 'src/infrastructure/printer/printer.provider';
-import { PrintServerController } from 'src/api/controllers/print-server.controller';
 import { ModuleSpec } from 'src/infrastructure/ioc/types';
+import { PrinterProvider } from 'src/infrastructure/printer/printer.provider';
 
 const printerProvider = {
   provide: IPrinterProvider,
