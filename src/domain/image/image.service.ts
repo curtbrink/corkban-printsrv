@@ -1,21 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import * as path from 'path';
-import * as fsp from 'fs/promises';
 import * as fs from 'fs';
+import * as fsp from 'fs/promises';
+import { randomUUID } from 'node:crypto';
+import { writeFile } from 'node:fs/promises';
+import * as os from 'os';
+import * as path from 'path';
 import * as PImage from 'pureimage';
 import { Readable } from 'stream';
-import * as os from 'os';
-import { randomUUID } from 'node:crypto';
-import { WriteStream } from 'node:fs';
 
 @Injectable()
-export class ImageGeneratorService {
+export class ImageService {
   constructor() {
     const ticketFont = PImage.registerFont(
       path.join('.', 'assets', 'fonts', 'LibertinusSans-Regular.ttf'),
       'TicketTextFont',
     );
     ticketFont.loadSync();
+  }
+
+  async writeImageToFile(imageData: string, filePath: string): Promise<void> {
+    const imgBuffer = Buffer.from(imageData, 'base64url');
+    return await writeFile(filePath, imgBuffer);
   }
 
   async writeTextOnImage(text: string): Promise<string> {

@@ -1,9 +1,9 @@
-import { ImageGeneratorService } from 'src/domain/image-generator/image-generator.service';
+import { ImageService } from 'src/domain/image/image.service';
 import { ModuleSpec } from 'src/infrastructure/ioc/types';
 
 const moduleSpec: ModuleSpec = {
   infrastructureProviders: [],
-  domainProviders: [ImageGeneratorService],
+  domainProviders: [ImageService],
   apiControllers: [],
 };
 
